@@ -1,0 +1,12 @@
+- heading "Трещотка" [level=1]
+- img "Логотип"
+- heading "Добро пожаловать" [level=2]
+- img "mail"
+- textbox "Email"
+- img "lock"
+- textbox "Пароль"
+- img "eye-invisible"
+- button "Войти"
+- text: Нет аккаунта?
+- link "Зарегистрироваться":
+  - /url: /register

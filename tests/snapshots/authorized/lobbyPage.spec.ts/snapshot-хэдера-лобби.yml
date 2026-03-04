@@ -1,0 +1,7 @@
+- banner:
+  - img "Логотип"
+  - heading "Трещотка" [level=3]
+  - strong: /Привет,.*/
+  - button "logout Выйти":
+    - img "logout"
+    - text: /.*/

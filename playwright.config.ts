@@ -35,7 +35,7 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chromium unauthorized",
+      name: "chromium_unauthorized",
       use: {
         ...devices["Desktop Chrome"],
       },
@@ -43,12 +43,12 @@ export default defineConfig({
       snapshotPathTemplate: "tests/snapshots/unauthorized/{testFilePath}/{arg}{ext}",
     },
     {
-      name: "chromium authorized",
+      name: "chromium_authorized",
       use: {
         ...devices["Desktop Chrome"],
-        storageState: "tests/playwright/.auth/user.json",
+        // storageState: "tests/playwright/.auth/user.json",
       },
-      dependencies: ["auth"],
+      // dependencies: ["auth"],
       testDir: 'tests/specs/authorized',
       snapshotPathTemplate: "tests/snapshots/authorized/{testFilePath}/{arg}{ext}",
     },
@@ -61,10 +61,13 @@ export default defineConfig({
     //   name: "webkit",
     //   use: { ...devices["Desktop Safari"] },
     // },
-    {
-      name: "auth",
-      testMatch: "tests/specs/authTest.spec.ts",
-    },
+    // {
+    //   name: "auth",
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //   },
+    //   testMatch: "tests/specs/authTest.spec.ts",
+    // },
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',

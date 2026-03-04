@@ -11,6 +11,10 @@ export class LoginPage extends BasePage {
   readonly loginButtonLocator: Locator;
   readonly registerMessageLocator: Locator;
   readonly registerLinkLocator: Locator;
+  readonly invalidEmailErrorMessageLocator: Locator;
+  readonly invalidEmailOrPasswordErrorMessageLocator: Locator;
+  readonly emptyEmailFieldErrorMessageLocator: Locator;
+  readonly emptyPasswordFieldErrorMessageLocator: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -21,66 +25,91 @@ export class LoginPage extends BasePage {
       name: "Добро пожаловать",
     });
     this.emailInputLocator = this.page.getByPlaceholder("Email");
-    this.passwordInputLocator =
-      this.page.getByPlaceholder("Пароль");
+    this.passwordInputLocator = this.page.getByPlaceholder("Пароль");
     this.loginButtonLocator = this.page.getByRole("button", { name: "Войти" });
     this.registerMessageLocator = this.page.getByText("Нет аккаунта?");
     this.registerLinkLocator = this.page.getByRole("link", {
       name: "Зарегистрироваться",
     });
+    this.invalidEmailErrorMessageLocator = this.page.getByText(
+      "Пожалуйста, введите корректный email!",
+    );
+    this.emptyEmailFieldErrorMessageLocator = this.page.getByText(
+      "Пожалуйста, введите ваш email!",
+    );
+    this.emptyPasswordFieldErrorMessageLocator = this.page.getByText(
+      "Пожалуйста, введите ваш пароль!",
+    );
+    this.invalidEmailOrPasswordErrorMessageLocator = this.page.getByText(
+      "Неверный email или пароль.",
+    );
   }
 
+  // actions
   async open() {
     await this.page.goto("https://treshotka.vercel.app/login");
   }
 
-  async authStackHasCorrectAriaSnaphot() {
-    await expect(this.authStackLocator).toMatchAriaSnapshot({
-      name: "snapshot контейнера авторизации.yml",
-    });
+  async login(login: string, pass: string) {
+    await this.emailInputLocator.fill(login);
+    await this.passwordInputLocator.fill(pass);
+    await this.loginButtonLocator.click();
   }
 
-  async heading() {
+  // assertions
+  async authStackHasCorrectAriaSnaphot() {
+    await this.checkAriaSnapshot(this.authStackLocator, "snapshot контейнера авторизации.yml");
+  }
+
+  async checkHeading() {
     await expect(this.headingLocator).toBeVisible();
     await expect(this.headingLocator).toHaveText("Трещотка");
   }
 
-  async logo() {
+  async checkLogo() {
     await expect(this.logoLocator).toBeVisible();
   }
 
-	async title() {
+  async checkTitle() {
     await expect(this.titleLocator).toBeVisible();
     await expect(this.titleLocator).toHaveText("Добро пожаловать");
   }
 
-	async emailInput() {
+  async checkEmailInput() {
     await expect(this.emailInputLocator).toBeVisible();
   }
 
-	async passwordInput() {
+  async checkPasswordInput() {
     await expect(this.passwordInputLocator).toBeVisible();
   }
 
-	async loginButton() {
+  async checkLoginButton() {
     await expect(this.loginButtonLocator).toBeVisible();
   }
 
-	async registerMessage() {
+  async checkRegisterMessage() {
     await expect(this.registerMessageLocator).toBeVisible();
-		await expect(this.registerMessageLocator).toHaveText("Нет аккаунта?");
+    await expect(this.registerMessageLocator).toHaveText("Нет аккаунта?");
   }
 
-	async registerLink() {
+  async checkRegisterLink() {
     await expect(this.registerLinkLocator).toBeVisible();
-		await expect(this.registerLinkLocator).toHaveText("Зарегистрироваться");
-  }
-	
-	async login() {
-    await this.emailInputLocator.fill('guest@email.com');
-    await this.passwordInputLocator.fill('123456');
-    await this.loginButtonLocator.click();
-		await expect(this.page).toHaveURL("https://treshotka.vercel.app/lobby");
+    await expect(this.registerLinkLocator).toHaveText("Зарегистрироваться");
   }
 
+  async checkInvalidEmailErrorMessage() {
+    await expect(this.invalidEmailErrorMessageLocator).toBeVisible();
+  }
+
+  async checkEmptyEmailFieldErrorMessage() {
+    await expect(this.emptyEmailFieldErrorMessageLocator).toBeVisible();
+  }
+
+  async checkEmptyPasswordFieldErrorMessage() {
+    await expect(this.emptyPasswordFieldErrorMessageLocator).toBeVisible();
+  }
+
+  async checkInvalidEmailOrPasswordErrorMessage() {
+    await expect(this.invalidEmailOrPasswordErrorMessageLocator).toBeVisible();
+  }
 }

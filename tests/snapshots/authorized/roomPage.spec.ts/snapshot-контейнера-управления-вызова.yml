@@ -1,0 +1,10 @@
+- button "audio":
+  - img "audio"
+- button "video-camera":
+  - img "video-camera"
+- button "poweroff":
+  - img "poweroff"
+- button "fullscreen":
+  - img "fullscreen"
+- button "home":
+  - img "home"

@@ -1,0 +1,6 @@
+- img /lock|unlock/
+- strong: /.*/
+- text: /Создал\(а\) .* \d+\.\d+\.\d+/
+- button "login Войти":
+  - img "login"
+  - text: ""
