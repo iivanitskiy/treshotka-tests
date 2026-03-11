@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import { ONLINE_COUNT_TEXT_PREFIX } from "../data/messages";
 
 export class RoomPage extends BasePage {
   readonly videoCallContainerLocator: Locator;
@@ -69,7 +70,7 @@ export class RoomPage extends BasePage {
 
   // actions
   async open() {
-    await this.page.goto("https://treshotka.vercel.app/lobby");
+    await this.page.goto("/lobby");
     await this.page.getByRole("button", { name: "login Войти" }).nth(1).click();
   }
 
@@ -126,7 +127,7 @@ export class RoomPage extends BasePage {
 
   async homeButtonClick() {
     await this.homeButtonLocator.click();
-    await expect(this.page).toHaveURL("https://treshotka.vercel.app/lobby");
+    await expect(this.page).toHaveURL(/\/lobby$/);
   }
 
   async newMessageSend() {
@@ -145,7 +146,7 @@ export class RoomPage extends BasePage {
   }
 
   //assertions
-  async videoCallControlsHasCorrectAriaSnaphot() {
+  async videoCallControlsHasCorrectAriaSnapshot() {
     await this.checkAriaSnapshot(
       this.videoCallControlsLocator,
       "snapshot контейнера управления вызова.yml",
@@ -162,7 +163,9 @@ export class RoomPage extends BasePage {
   async checkParticipantsCount() {
     await this.participantsPanelLocator.click();
     const count = await this.participantsListLocator.count();
-    await expect(this.onlineCountLocator).toContainText(`В сети (${count})`);
+    await expect(this.onlineCountLocator).toContainText(
+      `${ONLINE_COUNT_TEXT_PREFIX} (${count})`,
+    );
   }
 
   async checkParticipant() {

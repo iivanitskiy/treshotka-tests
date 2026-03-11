@@ -1,5 +1,16 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import {
+  APP_TITLE,
+  ERROR_EMAIL_INVALID,
+  ERROR_EMAIL_REQUIRED,
+  ERROR_EMAIL_ALREADY_REGISTERED,
+  ERROR_NAME_REQUIRED,
+  ERROR_PASSWORD_REQUIRED,
+  ERROR_PASSWORD_TOO_SHORT,
+  REGISTER_HAVE_ACCOUNT_MESSAGE,
+  REGISTER_TITLE,
+} from "../data/messages";
 
 export class RegisterPage extends BasePage {
   readonly registerStackLocator: Locator;
@@ -22,10 +33,10 @@ export class RegisterPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.registerStackLocator = this.page.locator("div.auth-stack");
-    this.headingLocator = this.page.getByRole("heading", { name: "Трещотка" });
+    this.headingLocator = this.page.getByRole("heading", { name: APP_TITLE });
     this.logoLocator = this.page.getByRole("img", { name: "Логотип" });
     this.titleLocator = this.page.getByRole("heading", {
-      name: "Создать аккаунт",
+      name: REGISTER_TITLE,
     });
     this.nameInputLocator = this.page.getByPlaceholder("Имя пользователя");
     this.emailInputLocator = this.page.getByPlaceholder("Email");
@@ -33,33 +44,35 @@ export class RegisterPage extends BasePage {
     this.registerButtonLocator = this.page.getByRole("button", {
       name: "Зарегистрироваться",
     });
-    this.registerMessageLocator = this.page.getByText("Уже есть аккаунт?");
+    this.registerMessageLocator = this.page.getByText(
+      REGISTER_HAVE_ACCOUNT_MESSAGE,
+    );
     this.authLinkLocator = this.page.getByRole("link", {
       name: "Войти",
     });
     this.emptyNameFieldErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите ваше имя!",
+      ERROR_NAME_REQUIRED,
     );
     this.invalidEmailErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите корректный email!",
+      ERROR_EMAIL_INVALID,
     );
     this.emptyEmailFieldErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите ваш email!",
+      ERROR_EMAIL_REQUIRED,
     );
     this.invalidPasswordErrorMessageLocator = this.page.getByText(
-      "Пароль должен содержать минимум 6 символов.",
+      ERROR_PASSWORD_TOO_SHORT,
     );
     this.emptyPasswordFieldErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите ваш пароль!",
+      ERROR_PASSWORD_REQUIRED,
     );
     this.existUserRegisterErrorMessageLocator = this.page.getByText(
-      "Этот email уже зарегистрирован.",
+      ERROR_EMAIL_ALREADY_REGISTERED,
     );
   }
 
   // actions
   async open() {
-    await this.page.goto("https://treshotka.vercel.app/register");
+    await this.page.goto("/register");
   }
 
   async register(name: string, email: string, pass: string) {
@@ -70,13 +83,13 @@ export class RegisterPage extends BasePage {
   }
 
   // assertions
-  async registerStackHasCorrectAriaSnaphot() {
+  async registerStackHasCorrectAriaSnapshot() {
     await this.checkAriaSnapshot(this.registerStackLocator, "snapshot контейнера регистрации.yml");
   }
 
   async checkHeading() {
     await expect(this.headingLocator).toBeVisible();
-    await expect(this.headingLocator).toHaveText("Трещотка");
+    await expect(this.headingLocator).toHaveText(APP_TITLE);
   }
 
   async checkLogo() {
@@ -85,7 +98,7 @@ export class RegisterPage extends BasePage {
 
   async checkTitle() {
     await expect(this.titleLocator).toBeVisible();
-    await expect(this.titleLocator).toHaveText("Создать аккаунт");
+    await expect(this.titleLocator).toHaveText(REGISTER_TITLE);
   }
 
   async checkNameInput() {
@@ -102,7 +115,9 @@ export class RegisterPage extends BasePage {
 
   async checkRegisterMessage() {
     await expect(this.registerMessageLocator).toBeVisible();
-    await expect(this.registerMessageLocator).toHaveText("Уже есть аккаунт?");
+    await expect(this.registerMessageLocator).toHaveText(
+      REGISTER_HAVE_ACCOUNT_MESSAGE,
+    );
   }
 
   async checkRegisterButton() {
@@ -137,7 +152,7 @@ export class RegisterPage extends BasePage {
   async checkExistUserRegisterErrorMessage() {
     await expect(this.existUserRegisterErrorMessageLocator).toBeVisible();
     await expect(this.existUserRegisterErrorMessageLocator).toHaveText(
-      "Этот email уже зарегистрирован.",
+      ERROR_EMAIL_ALREADY_REGISTERED,
     );
   }
 }

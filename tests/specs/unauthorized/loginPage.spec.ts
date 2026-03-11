@@ -8,7 +8,7 @@ import {
 test("Проверка доступности элементов авторизации snapshot", async ({
   loginPage,
 }) => {
-  await loginPage.authStackHasCorrectAriaSnaphot();
+  await loginPage.authStackHasCorrectAriaSnapshot();
 });
 
 test("Проверка доступности элементов авторизации", async ({ loginPage }) => {

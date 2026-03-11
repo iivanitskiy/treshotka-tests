@@ -1,8 +1,12 @@
 import { roomInvalidPassword, roomValidPassword } from "../../data/credentials";
 import { test } from "../../fixtures/authorizedFixtures";
+import {
+  ERROR_ROOM_PASSWORD_INVALID,
+  ERROR_ROOM_PASSWORD_REQUIRED,
+} from "../../data/messages";
 
 test("Проверка доступности хэдера лобби snapshot", async ({ lobbyPage }) => {
-  await lobbyPage.lobbyHeaderHasCorrectAriaSnaphot();
+  await lobbyPage.lobbyHeaderHasCorrectAriaSnapshot();
 });
 
 test("Проверка доступности элементов хэдера лобби", async ({ lobbyPage }) => {
@@ -28,7 +32,7 @@ test("Проверка списка карточек комнаты snapshot", a
   } else {
     await test.step("2. Комнаты есть - Проверка комнат snapshot", async () => {
       for (let i = 0; i < roomsCount; i++) {
-        await lobbyPage.lobbyRoomCardHasCorrectAriaSnaphot(i);
+        await lobbyPage.lobbyRoomCardHasCorrectAriaSnapshot(i);
       }
     });
   }
@@ -43,11 +47,17 @@ test("Вход в закрытую комнату", async ({ lobbyPage }) => {
 });
 
 test("Вход в закрытую комнату с неверным паролем", async ({ lobbyPage }) => {
-  await lobbyPage.enterClosedRoomFail(roomInvalidPassword, "Неверный пароль");
+  await lobbyPage.enterClosedRoomFail(
+    roomInvalidPassword,
+    ERROR_ROOM_PASSWORD_INVALID,
+  );
 });
 
 test("Вход в закрытую комнату с пустым паролем", async ({ lobbyPage }) => {
-  await lobbyPage.enterClosedRoomFail("", "Пожалуйста, введите пароль");
+  await lobbyPage.enterClosedRoomFail(
+    "",
+    ERROR_ROOM_PASSWORD_REQUIRED,
+  );
 });
 
 test("Проверка доступности элементов модального окна входа в закрытую комнату и закрытие по нажатию на иконку", async ({ lobbyPage}) => {

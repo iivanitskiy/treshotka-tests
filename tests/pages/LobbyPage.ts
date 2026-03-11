@@ -1,5 +1,12 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import {
+  APP_TITLE,
+  ERROR_ROOM_PASSWORD_INVALID,
+  ERROR_ROOM_PASSWORD_REQUIRED,
+  LOBBY_NO_ROOMS_TEXT,
+  LOBBY_NO_ROOMS_TEXT_FULL,
+} from "../data/messages";
 
 export class LobbyPage extends BasePage {
   readonly lobbyHeaderLocator: Locator;
@@ -18,7 +25,7 @@ export class LobbyPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.lobbyHeaderLocator = this.page.locator("header.lobby-header");
-    this.headingLocator = this.page.getByRole("heading", { name: "Трещотка" });
+    this.headingLocator = this.page.getByRole("heading", { name: APP_TITLE });
     this.logoLocator = this.page.getByRole("img", { name: "Логотип" });
     this.titleLocator = this.page.getByText(/Привет/);
     this.logoutButtonLocator = this.page.getByRole("button", {
@@ -31,9 +38,7 @@ export class LobbyPage extends BasePage {
     this.emptyRoomsListIconLocator = this.page.getByRole("img", {
       name: "No data",
     });
-    this.emptyRoomsListTextLocator = this.page.getByText(
-      "Нет доступных комнат",
-    );
+    this.emptyRoomsListTextLocator = this.page.getByText(LOBBY_NO_ROOMS_TEXT);
     this.enterOpenedRoomButtonLocator = this.page
       .getByRole("button", { name: "login Войти" })
       .nth(1);
@@ -46,17 +51,17 @@ export class LobbyPage extends BasePage {
   // actions
   async logout() {
     await this.logoutButtonLocator.click();
-    await expect(this.page).toHaveURL("https://treshotka.vercel.app/login");
+    await expect(this.page).toHaveURL(/\/login$/);
   }
 
-  async lobbyHeaderHasCorrectAriaSnaphot() {
+  async lobbyHeaderHasCorrectAriaSnapshot() {
     await this.checkAriaSnapshot(
       this.lobbyHeaderLocator,
       "snapshot хэдера лобби.yml",
     );
   }
 
-  async lobbyRoomCardHasCorrectAriaSnaphot(index: number) {
+  async lobbyRoomCardHasCorrectAriaSnapshot(index: number) {
     await this.checkAriaSnapshot(
       this.roomLocator.nth(index),
       "snapshot карточки комнаты generic.yml",
@@ -65,26 +70,23 @@ export class LobbyPage extends BasePage {
 
   async enterOpenRoom() {
     await this.enterOpenedRoomButtonLocator.click();
-    await expect(this.page).toHaveURL(
-      /https:\/\/treshotka\.vercel\.app\/room.*/,
-    );
+    await expect(this.page).toHaveURL(/\/room.*/);
   }
 
   async enterClosedRoom(password: string) {
     await this.enterClosedRoomButtonLocator.click();
-    await this.page.waitForTimeout(1000);
-    await this.page.getByRole("textbox", { name: "Пароль" }).click();
-    await this.page.getByRole("textbox", { name: "Пароль" }).fill(password);
+    const passwordInput = this.page.getByRole("textbox", { name: "Пароль" });
+    await expect(passwordInput).toBeVisible();
+    await passwordInput.fill(password);
     await this.page.getByRole("button", { name: "Войти в комнату" }).click();
-    await expect(this.page).toHaveURL(
-      /https:\/\/treshotka\.vercel\.app\/room.*/,
-    );
+    await expect(this.page).toHaveURL(/\/room.*/);
   }
 
   async enterClosedRoomFail(password: string, errorText: string) {
     await this.enterClosedRoomButtonLocator.click();
-    await this.page.getByRole("textbox", { name: "Пароль" }).click();
-    await this.page.getByRole("textbox", { name: "Пароль" }).fill(password);
+    const passwordInput = this.page.getByRole("textbox", { name: "Пароль" });
+    await expect(passwordInput).toBeVisible();
+    await passwordInput.fill(password);
     await this.page.getByRole("button", { name: "Войти в комнату" }).click();
     await expect(this.page.getByText(errorText)).toBeVisible();
   }
@@ -128,7 +130,7 @@ export class LobbyPage extends BasePage {
   //assertions
   async checkHeading() {
     await expect(this.headingLocator).toBeVisible();
-    await expect(this.headingLocator).toHaveText("Трещотка");
+    await expect(this.headingLocator).toHaveText(APP_TITLE);
   }
 
   async checkLogo() {
@@ -154,7 +156,7 @@ export class LobbyPage extends BasePage {
     await expect(this.emptyRoomsListIconLocator).toBeVisible();
     await expect(this.emptyRoomsListTextLocator).toBeVisible();
     await expect(this.emptyRoomsListTextLocator).toHaveText(
-      "Нет доступных комнат. Создайте новую!",
+      LOBBY_NO_ROOMS_TEXT_FULL,
     );
   }
 }

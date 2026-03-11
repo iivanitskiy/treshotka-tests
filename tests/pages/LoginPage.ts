@@ -1,5 +1,14 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import {
+  APP_TITLE,
+  ERROR_EMAIL_INVALID,
+  ERROR_EMAIL_REQUIRED,
+  ERROR_INVALID_EMAIL_OR_PASSWORD,
+  ERROR_PASSWORD_REQUIRED,
+  LOGIN_NO_ACCOUNT_MESSAGE,
+  LOGIN_TITLE,
+} from "../data/messages";
 
 export class LoginPage extends BasePage {
   readonly authStackLocator: Locator;
@@ -19,35 +28,37 @@ export class LoginPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.authStackLocator = this.page.locator("div.auth-stack");
-    this.headingLocator = this.page.getByRole("heading", { name: "Трещотка" });
+    this.headingLocator = this.page.getByRole("heading", { name: APP_TITLE });
     this.logoLocator = this.page.getByRole("img", { name: "Логотип" });
     this.titleLocator = this.page.getByRole("heading", {
-      name: "Добро пожаловать",
+      name: LOGIN_TITLE,
     });
     this.emailInputLocator = this.page.getByPlaceholder("Email");
     this.passwordInputLocator = this.page.getByPlaceholder("Пароль");
     this.loginButtonLocator = this.page.getByRole("button", { name: "Войти" });
-    this.registerMessageLocator = this.page.getByText("Нет аккаунта?");
+    this.registerMessageLocator = this.page.getByText(
+      LOGIN_NO_ACCOUNT_MESSAGE,
+    );
     this.registerLinkLocator = this.page.getByRole("link", {
       name: "Зарегистрироваться",
     });
     this.invalidEmailErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите корректный email!",
+      ERROR_EMAIL_INVALID,
     );
     this.emptyEmailFieldErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите ваш email!",
+      ERROR_EMAIL_REQUIRED,
     );
     this.emptyPasswordFieldErrorMessageLocator = this.page.getByText(
-      "Пожалуйста, введите ваш пароль!",
+      ERROR_PASSWORD_REQUIRED,
     );
     this.invalidEmailOrPasswordErrorMessageLocator = this.page.getByText(
-      "Неверный email или пароль.",
+      ERROR_INVALID_EMAIL_OR_PASSWORD,
     );
   }
 
   // actions
   async open() {
-    await this.page.goto("https://treshotka.vercel.app/login");
+    await this.page.goto("/login");
   }
 
   async login(login: string, pass: string) {
@@ -57,13 +68,13 @@ export class LoginPage extends BasePage {
   }
 
   // assertions
-  async authStackHasCorrectAriaSnaphot() {
+  async authStackHasCorrectAriaSnapshot() {
     await this.checkAriaSnapshot(this.authStackLocator, "snapshot контейнера авторизации.yml");
   }
 
   async checkHeading() {
     await expect(this.headingLocator).toBeVisible();
-    await expect(this.headingLocator).toHaveText("Трещотка");
+    await expect(this.headingLocator).toHaveText(APP_TITLE);
   }
 
   async checkLogo() {
@@ -72,7 +83,7 @@ export class LoginPage extends BasePage {
 
   async checkTitle() {
     await expect(this.titleLocator).toBeVisible();
-    await expect(this.titleLocator).toHaveText("Добро пожаловать");
+    await expect(this.titleLocator).toHaveText(LOGIN_TITLE);
   }
 
   async checkEmailInput() {
@@ -89,7 +100,9 @@ export class LoginPage extends BasePage {
 
   async checkRegisterMessage() {
     await expect(this.registerMessageLocator).toBeVisible();
-    await expect(this.registerMessageLocator).toHaveText("Нет аккаунта?");
+    await expect(this.registerMessageLocator).toHaveText(
+      LOGIN_NO_ACCOUNT_MESSAGE,
+    );
   }
 
   async checkRegisterLink() {

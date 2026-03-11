@@ -4,7 +4,7 @@ import { newValidUser, existUser } from "../../data/credentials";
 test("Проверка доступности элементов регистрации snapshot", async ({
   registerPage,
 }) => {
-  await registerPage.registerStackHasCorrectAriaSnaphot();
+  await registerPage.registerStackHasCorrectAriaSnapshot();
 });
 
 test("Проверка доступности элементов регистрации", async ({ registerPage }) => {
