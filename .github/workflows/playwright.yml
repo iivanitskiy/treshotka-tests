@@ -74,3 +74,19 @@ jobs:
           path: allure-report/
           retention-days: 30
           if-no-files-found: ignore
+      - name: Zip Allure report
+        run: |
+          if [[ -d allure-report ]]; then
+            zip -r allure-report.zip allure-report
+          fi
+      - name: Send Allure report to Telegram
+        if: always() && !cancelled()
+        run: |
+          if [[ -f allure-report.zip ]]; then
+            curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument" \
+              -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+              -F document=@allure-report.zip \
+              -F caption="Allure report (GitHub Actions run #${{ github.run_number }})"
+          else
+            echo "No report to send"
+          fi
