@@ -23,7 +23,7 @@
 *   **Язык:** TypeScript.
 *   **Фреймворк:** Playwright.
 *   **Тест-раннер:** Встроенный тест-раннер Playwright.
-*   **Отчеты:** Allure и Playwright HTML Reporter.
+*   **Отчеты:** Allure (Также приходит в телеграмм) и Playwright HTML Reporter.
 *   **CI/CD:** GitHub Actions.
 
 ## Архитектура и особенности 🧠
@@ -60,6 +60,7 @@
   *   Все тесты в headless-режиме: <code>npm test</code>
   *   С открытым браузером: <code>npm run test:headed</code>
   *   С UI-режимом Playwright: <code>npm run test:ui</code>
+5. Добавьте TELEGRAM_CHAT_ID и TELEGRAM_BOT_TOKEN в secrets, чтобы Allure отчёт приходил в телеграм.
 
 ## Интеграция и отчеты 📈
 
