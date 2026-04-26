@@ -40,10 +40,10 @@ export class LobbyPage extends BasePage {
     });
     this.emptyRoomsListTextLocator = this.page.getByText(LOBBY_NO_ROOMS_TEXT);
     this.enterOpenedRoomButtonLocator = this.page
-      .getByRole("button", { name: "login Войти" })
+      .getByText('Войти')
       .nth(1);
     this.enterClosedRoomButtonLocator = this.page
-      .getByRole("button", { name: "login Войти" })
+      .getByText('Войти')
       .first();
     this.enterRoomModalLocator = this.page.locator("div.ant-modal");
   }

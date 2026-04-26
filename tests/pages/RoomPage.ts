@@ -71,7 +71,7 @@ export class RoomPage extends BasePage {
   // actions
   async open() {
     await this.page.goto("/lobby");
-    await this.page.getByRole("button", { name: "login Войти" }).nth(1).click();
+    await this.page.getByText('Войти').nth(1).click();
   }
 
   async micButtonClick() {

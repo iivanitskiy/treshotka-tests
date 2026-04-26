@@ -16,7 +16,7 @@ export const test = base.extend<MyFixtures & { context: BrowserContext }>({
     await page.getByPlaceholder("Email").fill(existUser.login);
     await page.getByPlaceholder("Пароль").fill(existUser.password);
     await page.getByRole("button", { name: "Войти" }).click();
-    await expect(page).toHaveURL("https://treshotka.vercel.app/lobby");
+    await expect(page).toHaveURL("https://treshotka.vercel.app/");
     await use(context);
     await context.close();
   },

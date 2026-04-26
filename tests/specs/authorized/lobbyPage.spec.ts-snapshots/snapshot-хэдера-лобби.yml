@@ -1,0 +1,9 @@
+- banner:
+  - img "Логотип"
+  - heading "Трещотка" [level=3]
+  - img "home"
+  - text: На главную
+  - strong: Привет, Тестовый пользователь
+  - button "logout Выйти":
+    - img "logout"
+    - text: ""

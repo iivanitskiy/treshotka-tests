@@ -26,7 +26,7 @@ test("Регистрация нового пользователя", async ({ re
     newValidUser.password,
   );
   await expect(registerPage.page).toHaveURL(
-    "https://treshotka.vercel.app/lobby",
+    "https://treshotka.vercel.app/",
   );
 });
 
