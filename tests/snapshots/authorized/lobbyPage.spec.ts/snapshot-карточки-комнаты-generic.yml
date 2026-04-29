@@ -1,7 +1,7 @@
-- img "unlock"
+- img "lock"
 - img "user"
 - text: "0"
-- strong: Тестовая открытая
+- strong: Тестовая закрытая
 - text: /Создал\(а\) Админ \d+\.\d+\.\d+/
 - img "login"
 - text: Войти
